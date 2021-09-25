@@ -69,6 +69,7 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
     final var saved = repository.save(0, username, hash).orElseThrow(RegistrationException::new);
 
     repository.saveToken(saved.getId(), token);
+    repository.saveRole(saved.getId(), Roles.ROLE_USER);
     return new RegistrationResponseDto(saved.getId(), saved.getUsername(), token);
   }
 

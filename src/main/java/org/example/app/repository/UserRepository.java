@@ -100,6 +100,16 @@ public class UserRepository {
     ));
   }
 
+  public void saveRole(long userId, String role){
+    // language=PostgreSQL
+    jdbcTemplate.update(
+            """
+                    INSERT INTO roles(role, "userId") VALUES (?, ?)
+                    """,
+            role, userId
+    );
+  };
+
   public void saveToken(long userId, String token) {
     // query - SELECT'ов (ResultSet)
     // update - ? int/long

@@ -27,7 +27,7 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
     try {
       final var user = UserHelper.getUser(req);
       List<Card> data;
-      if(((List<String>)((Authentication)req.getAttribute(RequestAttributes.AUTH_ATTR)).getCredentials()).contains("ROLE_ADMIN")){
+      if(((List<?>)((Authentication)req.getAttribute(RequestAttributes.AUTH_ATTR)).getCredentials()).contains("ROLE_ADMIN")){
         data = service.getAll();
       }
       // cards.getAll?ownerId=1
@@ -36,6 +36,7 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
       }
       resp.setHeader("Content-Type", "application/json");
       resp.getWriter().write(gson.toJson(data));
+
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
