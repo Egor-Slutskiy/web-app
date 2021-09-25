@@ -39,3 +39,11 @@ CREATE TABLE cards
     balance   BIGINT  NOT NULL DEFAULT 0,
     active    BOOLEAN NOT NULL DEFAULT TRUE
 );
+CREATE TABLE password_reset
+(
+    id       BIGSERIAL PRIMARY KEY,
+    code     TEXT        NOT NULL,
+    "userId" BIGINT      NOT NULL REFERENCES users,
+    status   TEXT        NOT NULL,
+    created  timestamptz NOT NULL DEFAULT current_timestamp
+)

@@ -38,8 +38,6 @@ public class TokenAuthenticationFilter extends HttpFilter {
     }
 
     try {
-      // TODO:
-      //  role to credentials
       final var authentication = provider.authenticate(new TokenAuthentication(token, null));
       req.setAttribute(RequestAttributes.AUTH_ATTR, authentication);
     } catch (AuthenticationException e) {

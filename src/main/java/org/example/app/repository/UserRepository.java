@@ -1,6 +1,7 @@
 package org.example.app.repository;
 
 import lombok.RequiredArgsConstructor;
+import org.example.app.domain.ResetCodeWithStatus;
 import org.example.app.domain.User;
 import org.example.app.domain.UserWithPassword;
 import org.example.app.entity.UserEntity;
@@ -26,6 +27,10 @@ public class UserRepository {
       resultSet.getLong("id"),
       resultSet.getString("username"),
       resultSet.getString("password")
+  );
+  private final RowMapper<ResetCodeWithStatus> codeRowMapper = resultSet -> new ResetCodeWithStatus(
+          resultSet.getLong("code"),
+          resultSet.getString("status")
   );
 
   private final RowMapper<String> roleRowMapper = resultSet -> resultSet.getString("role");
@@ -119,6 +124,48 @@ public class UserRepository {
             INSERT INTO tokens(token, "userId") VALUES (?, ?)
             """,
         token, userId
+    );
+  }
+
+  public void saveResetCode(long code, long userId, String status){
+    // language=PostgreSQL
+    jdbcTemplate.update(
+            """
+                    INSERT INTO password_reset(code, "userId", status) VALUES (?, ?, ?)
+                    """,
+            code, userId, status
+    );
+  }
+
+  public Optional<ResetCodeWithStatus> getResetCode(long userId){
+    // language=PostgreSQL
+    return jdbcTemplate.queryOne(
+            """
+                SELECT code, status FROM password_reset WHERE "userId" = ?
+                """,
+            codeRowMapper,
+            userId
+    );
+  }
+
+  public void saveNewPassword(String password, long userId){
+    // language=PostgreSQL
+    jdbcTemplate.update(
+            """
+                UPDATE users
+                SET password = ?
+                WHERE id = ?
+                """,
+            password,
+            userId
+    );
+    // language=PostgreSQL
+    jdbcTemplate.update(
+            """
+                DELETE FROM password_reset
+                WHERE "userId" = ?
+                """,
+            userId
     );
   }
 }

@@ -1,12 +1,10 @@
 package org.example.app.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import org.example.app.domain.User;
 import org.example.app.domain.UserWithPassword;
-import org.example.app.dto.LoginRequestDto;
-import org.example.app.dto.LoginResponseDto;
-import org.example.app.dto.RegistrationRequestDto;
-import org.example.app.dto.RegistrationResponseDto;
+import org.example.app.dto.*;
 import org.example.app.exception.PasswordNotMatchesException;
 import org.example.app.exception.RegistrationException;
 import org.example.app.exception.UserNotFoundException;
@@ -21,7 +19,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
+@Log
 @RequiredArgsConstructor
 public class UserService implements AuthenticationProvider, AnonymousProvider {
   private final UserRepository repository;
@@ -100,5 +100,24 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
     final var token = result.getKey();
     final var saved = result.getValue();
     return new LoginResponseDto(saved.getId(), saved.getUsername(), token);
+  }
+
+  public ResetPassResponseDto createResetCode(long userId){
+    final long code = (long) ((Math.random() * (999999 - 100000)) + 100000);
+    log.log(Level.INFO, "Confirm code: " + code);
+    final String status = "UNCONFIRMED";
+    repository.saveResetCode(code, userId, status);
+    return new ResetPassResponseDto("CODE_CREATED", "Send your secure code and new password");
+  }
+
+  public boolean confirmResetCode(long code, long userId){
+    final var dbCode = repository.getResetCode(userId);
+    return dbCode.isPresent() && dbCode.get().getCode() == code & dbCode.get().getStatus().equals("UNCONFIRMED");
+  }
+
+  public ResetPassResponseDto resetPassword(String password, long userId){
+    final var hash = passwordEncoder.encode(password);
+    repository.saveNewPassword(hash, userId);
+    return new ResetPassResponseDto("OK", "Your password have been updated");
   }
 }

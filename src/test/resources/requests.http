@@ -50,3 +50,13 @@ Content-Type: application/json
   "toCard": "**** *999",
   "amount": 10000
 }
+
+###
+POST https://localhost:8443/api/reset_password
+Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
+Content-Type: application/json
+
+{
+  "code": 301845,
+  "password": "topsecret"
+}
