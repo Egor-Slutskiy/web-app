@@ -2,6 +2,9 @@ package org.example.app.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.app.domain.Card;
+import org.example.app.domain.User;
+import org.example.app.dto.TransferRequestDto;
+import org.example.app.dto.TransferResponseDto;
 import org.example.app.repository.CardRepository;
 
 import java.util.List;
@@ -15,4 +18,19 @@ public class CardService {
   }
 
   public List<Card> getAll(){ return cardRepository.getAll(); }
+
+  public TransferResponseDto transfer(TransferRequestDto requestDto, User owner){
+    //TODO:
+    //  Получать карту не по номеру, а по номеру и OwnerID (?)
+    final var toCard = cardRepository.getOneByNumber(requestDto.getToCard());
+    final var fromCard = cardRepository.getOneByNumber(requestDto.getFromCard());
+    final var amount = requestDto.getAmount();
+    if(toCard.isPresent() & fromCard.isPresent()){
+      if(fromCard.get().getBalance()>=amount & fromCard.get().getOwnerId() == owner.getId()){
+        cardRepository.transfer(fromCard.get().getId(), toCard.get().getId(), amount);
+        return new TransferResponseDto("ok", "transfer complete");
+      }
+    }
+    return new TransferResponseDto("fail", "transfer fail");
+  }
 }

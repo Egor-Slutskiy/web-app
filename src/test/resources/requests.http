@@ -38,3 +38,15 @@ Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjw
 ###
 GET https://localhost:8443/api/cards.getAll
 Authorization: Uvmbsv1hW8pN0O0BoGpPPjdzKy6xJ2dmJKUkVuBlMxNtpp4TSewVVE27mLte7LyyVT+luue3eBZcGn2TEV7WvQ==
+
+###
+POST https://localhost:8443/api/cards.transfer
+Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
+Content-Type: application/json
+
+{
+  "fromCard": "**** *888",
+  "username": "student",
+  "toCard": "**** *999",
+  "amount": 10000
+}
