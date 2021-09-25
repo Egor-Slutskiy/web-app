@@ -24,4 +24,11 @@ public class CardRepository {
         ownerId
     );
   }
+
+  public List<Card> getAll(){
+    return jdbcTemplate.queryAll(
+            "SELECT id, number, balance FROM cards WHERE active = TRUE",
+            cardRowMapper
+    );
+  }
 }

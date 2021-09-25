@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.example.app.domain.User;
 import org.example.app.domain.UserWithPassword;
 import org.example.app.entity.UserEntity;
+import org.example.framework.security.Roles;
 import org.example.jdbc.JdbcTemplate;
 import org.example.jdbc.RowMapper;
 
+import javax.management.relation.Role;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,6 +27,8 @@ public class UserRepository {
       resultSet.getString("username"),
       resultSet.getString("password")
   );
+
+  private final RowMapper<String> roleRowMapper = resultSet -> resultSet.getString("role");
 
   public Optional<User> getByUsername(String username) {
     // language=PostgreSQL
@@ -78,6 +83,21 @@ public class UserRepository {
         rowMapper,
         token
     );
+  }
+
+  public List<String> findRoleById(long userId) {
+    if(userId == -1){
+      return List.of(Roles.ROLE_ANONYMOUS);
+    }
+    // language=PostgreSQL
+    return (jdbcTemplate.queryAll(
+            """
+            SELECT role from roles
+            WHERE "userId" = ?
+            """,
+            roleRowMapper,
+            userId
+    ));
   }
 
   public void saveToken(long userId, String token) {

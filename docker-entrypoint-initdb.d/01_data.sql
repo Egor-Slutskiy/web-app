@@ -13,3 +13,10 @@ VALUES (1, 1, '**** *888', 50000),
        (2, 2, '**** *999', 90000);
 
 ALTER SEQUENCE cards_id_seq RESTART WITH 3;
+
+INSERT INTO roles(id, role, "userId")
+VALUES (1, 'ROLE_ADMIN', 1),
+       (2, 'ROLE_USER', 2),
+       (3, 'ROLE_USER', 1);
+
+ALTER SEQUENCE roles_id_seq RESTART WITH 4;

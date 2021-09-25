@@ -12,6 +12,13 @@ CREATE TABLE tokens
     "userId" BIGINT      NOT NULL REFERENCES users,
     created  timestamptz NOT NULL DEFAULT current_timestamp
 );
+CREATE TABLE roles
+(
+    id       BIGSERIAL PRIMARY KEY,
+    role     TEXT,
+    "userId" BIGINT      NOT NULL REFERENCES users,
+    created  timestamptz NOT NULL DEFAULT current_timestamp
+);
 CREATE TABLE registration_attempts
 (
     id       BIGSERIAL PRIMARY KEY,

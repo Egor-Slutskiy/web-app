@@ -25,6 +25,18 @@ public class JdbcTemplate {
     });
   }
 
+  public <T> List<T> queryAll(String sql, RowMapper<T> rowMapper) {
+    return execute(sql, statement -> {
+      try (final var resultSet = statement.executeQuery()) {
+        final var result = new ArrayList<T>();
+        while (resultSet.next()) {
+          result.add(rowMapper.mapRow(resultSet));
+        }
+        return result;
+      }
+    });
+  }
+
   public <T> Optional<T> queryOne(String sql, RowMapper<T> rowMapper, Object... args) {
     return execute(sql, args, statement -> {
       try (final var resultSet = statement.executeQuery()) {
@@ -50,6 +62,17 @@ public class JdbcTemplate {
       return executor.execute(statement);
 
     } catch (SQLException e) {
+      throw new DataAccessException(e);
+    }
+  }
+
+  private <T> T execute(String sql, Executor<T> executor){
+    try (
+            final var connection = dataSource.getConnection();
+            final var statement = connection.prepareStatement(sql);
+            ) {
+      return executor.execute(statement);
+    } catch (SQLException e){
       throw new DataAccessException(e);
     }
   }

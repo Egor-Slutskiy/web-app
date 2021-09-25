@@ -13,4 +13,6 @@ public class CardService {
   public List<Card> getAllByOwnerId(long ownerId) {
     return cardRepository.getAllByOwnerId(ownerId);
   }
+
+  public List<Card> getAll(){ return cardRepository.getAll(); }
 }

@@ -5,12 +5,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.example.app.domain.Card;
 import org.example.app.domain.User;
 import org.example.app.service.CardService;
 import org.example.app.util.UserHelper;
 import org.example.framework.attribute.RequestAttributes;
+import org.example.framework.security.Authentication;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 
@@ -22,9 +25,15 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
 
   public void getAll(HttpServletRequest req, HttpServletResponse resp) {
     try {
-      // cards.getAll?ownerId=1
       final var user = UserHelper.getUser(req);
-      final var data = service.getAllByOwnerId(user.getId());
+      List<Card> data;
+      if(((List<String>)((Authentication)req.getAttribute(RequestAttributes.AUTH_ATTR)).getCredentials()).contains("ROLE_ADMIN")){
+        data = service.getAll();
+      }
+      // cards.getAll?ownerId=1
+      else {
+        data = service.getAllByOwnerId(user.getId());
+      }
       resp.setHeader("Content-Type", "application/json");
       resp.getWriter().write(gson.toJson(data));
     } catch (IOException e) {
