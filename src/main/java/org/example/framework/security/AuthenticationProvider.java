@@ -5,6 +5,7 @@ import org.example.framework.attribute.RequestAttributes;
 
 public interface AuthenticationProvider {
   Authentication authenticate(Authentication authentication) throws AuthenticationException;
+  String updateToken(String token, long userId);
 
   default boolean authenticationIsRequired(HttpServletRequest req) {
     final var existingAuth = (Authentication) req.getAttribute(RequestAttributes.AUTH_ATTR);

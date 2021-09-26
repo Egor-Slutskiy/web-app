@@ -32,8 +32,8 @@ client.test("Request executed successfully", function() {
 
 ###
 
-GET https://server.local:8443/cards.getAll
-Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
+GET https://server.local:8443/api/cards.getAll
+Cookie: ccU62FnnhMFxx4tGUzQj85F4/fKvXl0t7A35Mpy/SbFTvBh+VK1zOg6MEimSQ/N0DRrMBrUypJt207S+9Ajtwg==
 
 ###
 GET https://server.local:8443/api/cards.getAll

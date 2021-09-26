@@ -9,7 +9,6 @@ import org.example.framework.security.Roles;
 import org.example.jdbc.JdbcTemplate;
 import org.example.jdbc.RowMapper;
 
-import javax.management.relation.Role;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.sql.Timestamp;

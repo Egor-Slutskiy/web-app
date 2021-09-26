@@ -132,4 +132,12 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
     repository.saveNewPassword(hash, userId);
     return new ResetPassResponseDto("OK", "Your password have been updated");
   }
+
+  @Override
+  public String updateToken(String token, long userid){
+    final var newToken = keyGenerator.generateKey();
+    repository.deleteToken(token);
+    repository.saveToken(userid, newToken);
+    return newToken;
+  }
 }
