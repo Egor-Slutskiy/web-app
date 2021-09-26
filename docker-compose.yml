@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:alpine
+    image: postgres:13-alpine3.14
     ports:
       - "5431:5432"
     environment:
