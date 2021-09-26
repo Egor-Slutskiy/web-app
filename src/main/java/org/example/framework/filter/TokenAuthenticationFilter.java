@@ -3,7 +3,6 @@ package org.example.framework.filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,8 +11,6 @@ import org.example.framework.attribute.RequestAttributes;
 import org.example.framework.security.*;
 
 import java.io.IOException;
-import java.security.cert.X509Certificate;
-import java.util.regex.Pattern;
 
 public class TokenAuthenticationFilter extends HttpFilter {
   private AuthenticationProvider provider;
@@ -26,13 +23,13 @@ public class TokenAuthenticationFilter extends HttpFilter {
 
   @Override
   protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-    if (!authenticationIsRequired(req)) {
+    if (!provider.authenticationIsRequired(req)) {
       super.doFilter(req, res, chain);
       return;
     }
 
     final var token = req.getHeader("Authorization");
-    if (token == null) {
+    if (token == null || token.contains("Basic")) {
       super.doFilter(req, res, chain);
       return;
     }
@@ -48,13 +45,4 @@ public class TokenAuthenticationFilter extends HttpFilter {
     super.doFilter(req, res, chain);
   }
 
-  private boolean authenticationIsRequired(HttpServletRequest req) {
-    final var existingAuth = (Authentication) req.getAttribute(RequestAttributes.AUTH_ATTR);
-
-    if (existingAuth == null || !existingAuth.isAuthenticated()) {
-      return true;
-    }
-
-    return AnonymousAuthentication.class.isAssignableFrom(existingAuth.getClass());
-  }
 }

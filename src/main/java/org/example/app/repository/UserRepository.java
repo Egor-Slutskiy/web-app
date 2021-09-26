@@ -12,6 +12,7 @@ import org.example.jdbc.RowMapper;
 import javax.management.relation.Role;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +35,7 @@ public class UserRepository {
   );
 
   private final RowMapper<String> roleRowMapper = resultSet -> resultSet.getString("role");
+  private final RowMapper<Timestamp> timestampRowMapper = resultSet -> resultSet.getTimestamp("created");
 
   public Optional<User> getByUsername(String username) {
     // language=PostgreSQL
@@ -77,7 +79,33 @@ public class UserRepository {
     );
   }
 
+  public Optional<Timestamp> tokenCreatedTime(String token){
+    // language=PostgreSQL
+    return jdbcTemplate.queryOne(
+            """
+                SELECT created FROM tokens
+                WHERE token = ?
+                """,
+            timestampRowMapper,
+            token
+    );
+  }
+
+  public void deleteToken(String token){
+    // language=PostgreSQL
+    jdbcTemplate.update(
+            """
+                DELETE FROM tokens
+                WHERE token = ?
+                """,
+            token
+    );
+  }
+
   public Optional<User> findByToken(String token) {
+    if(token==null){
+      return Optional.of(new User(-1L, "anonymous"));
+    }
     // language=PostgreSQL
     return jdbcTemplate.queryOne(
         """

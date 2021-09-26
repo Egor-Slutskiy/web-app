@@ -20,8 +20,8 @@ POST https://localhost:8443/api/rest/users/login
 Content-Type: application/json
 
 {
-  "username": "student",
-  "password": "qwery123"
+  "username": "admin",
+  "password": "god"
 }
 
 > {%
@@ -33,7 +33,7 @@ client.test("Request executed successfully", function() {
 ###
 
 GET https://localhost:8443/api/cards.getAll
-Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
+Authorization: Q68wDhQLUbQGnKt/4IRdp1WcvwxljVI+0j+k7jcL8Wv1SwY7ku66vV/juDWuVshP9nVjfwBd+7nQSJZGIW7LeA==
 
 ###
 GET https://localhost:8443/api/cards.getAll
