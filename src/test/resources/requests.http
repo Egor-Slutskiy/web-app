@@ -32,15 +32,15 @@ client.test("Request executed successfully", function() {
 
 ###
 
-GET https://localhost:8443/api/cards.getAll
-Authorization: Q68wDhQLUbQGnKt/4IRdp1WcvwxljVI+0j+k7jcL8Wv1SwY7ku66vV/juDWuVshP9nVjfwBd+7nQSJZGIW7LeA==
+GET https://server.local:8443/cards.getAll
+Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
 
 ###
-GET https://localhost:8443/api/cards.getAll
+GET https://server.local:8443/api/cards.getAll
 Authorization: Uvmbsv1hW8pN0O0BoGpPPjdzKy6xJ2dmJKUkVuBlMxNtpp4TSewVVE27mLte7LyyVT+luue3eBZcGn2TEV7WvQ==
 
 ###
-POST https://localhost:8443/api/cards.transfer
+POST https://server.local:8443/api/cards.transfer
 Authorization: 6NSb+2kcdKF44ut4iBu+dm6YLu6pakWapvxHtxqaPgMr5iRhox/HlhBerAZMILPjwnRtXms+zDfVTLCsao9nuw==
 Content-Type: application/json
 

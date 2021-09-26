@@ -4,9 +4,9 @@ services:
     image: ghcr.io/egor-slutskiy/web-app
     ports:
       - "8080:8080"
-      - "8443:8433"
+      - "8443:8443"
     environment:
-      - CATALINA_OPTS=-DJDBC_DATABASE_URL="jdbc:postgresql://db:5431/db?user=app&password=pass"
+      - CATALINA_OPTS=-DJDBC_DATABASE_URL="jdbc:postgresql://db:5432/db?user=app&password=pass"
     depends_on:
       - db
   db:
