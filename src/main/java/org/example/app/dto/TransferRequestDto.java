@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class TransferRequestDto {
     private String fromCard;
-    private String username;
     private String toCard;
     private long amount;
 }
