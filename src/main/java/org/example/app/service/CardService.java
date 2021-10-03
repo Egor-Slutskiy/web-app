@@ -30,7 +30,8 @@ public class CardService {
         cardRepository.transfer(fromCard.get().getId(), toCard.get().getId(), amount);
         return new TransferResponseDto("ok", "transfer complete");
       }
+      return new TransferResponseDto("fail", "Карта не ваша или недостаточно средств");
     }
-    return new TransferResponseDto("fail", "transfer fail");
+    return new TransferResponseDto("fail", "Не верный номер карты");
   }
 }
