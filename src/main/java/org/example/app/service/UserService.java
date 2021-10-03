@@ -24,7 +24,7 @@ import java.util.logging.Level;
 
 @Log
 @RequiredArgsConstructor
-public class UserService implements AuthenticationProvider, AnonymousProvider {
+public class UserService implements AuthenticationProvider, AnonymousProvider, BasicAuthenticationProvider {
   private final UserRepository repository;
   private final JpaTransactionTemplate transactionTemplate;
   private final PasswordEncoder passwordEncoder;
@@ -139,5 +139,13 @@ public class UserService implements AuthenticationProvider, AnonymousProvider {
     repository.deleteToken(token);
     repository.saveToken(userid, newToken);
     return newToken;
+  }
+
+  // FIXME:
+  //  Новый токен создается но не отправляется клиенту
+  @Override
+  public Authentication basicAuth(String username, String password) {
+    final var loginResponseDto = login(new LoginRequestDto(username, password));
+    return authenticate(new TokenAuthentication(loginResponseDto.getToken(), null));
   }
 }

@@ -39,7 +39,7 @@ public class TokenAuthenticationFilter extends HttpFilter {
       final var authentication = provider.authenticate(new TokenAuthentication(token, null));
       req.setAttribute(RequestAttributes.AUTH_ATTR, authentication);
       final var newToken = provider.updateToken(token, ((User) authentication.getPrincipal()).getId());
-      res.getWriter().write("{\"token\": \"" + newToken + "\"}");
+      res.setHeader("X-Token", newToken);
     } catch (AuthenticationException e) {
       res.sendError(401);
       return;

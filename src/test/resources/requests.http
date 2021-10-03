@@ -33,11 +33,15 @@ client.test("Request executed successfully", function() {
 ###
 
 GET https://server.local:8443/api/cards.getAll
-Cookie: ccU62FnnhMFxx4tGUzQj85F4/fKvXl0t7A35Mpy/SbFTvBh+VK1zOg6MEimSQ/N0DRrMBrUypJt207S+9Ajtwg==
+Cookie: z/iU0+EfCgygAvNrojB7SFsvhNPcgSSD+6F1C9fCpADAstPxdG6+ZrlzXtntWv3mfcDYwS5PAISPJWPjt1GCbg==
 
 ###
 GET https://server.local:8443/api/cards.getAll
-Authorization: Uvmbsv1hW8pN0O0BoGpPPjdzKy6xJ2dmJKUkVuBlMxNtpp4TSewVVE27mLte7LyyVT+luue3eBZcGn2TEV7WvQ==
+Authorization: z/iU0+EfCgygAvNrojB7SFsvhNPcgSSD+6F1C9fCpADAstPxdG6+ZrlzXtntWv3mfcDYwS5PAISPJWPjt1GCbg==
+
+###
+GET https://localhost:8443/api/cards.getAll
+Authorization: Basic YWRtaW46Z29k
 
 ###
 POST https://server.local:8443/api/cards.transfer
