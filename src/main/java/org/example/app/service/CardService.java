@@ -19,6 +19,8 @@ public class CardService {
 
   public List<Card> getAll(){ return cardRepository.getAll(); }
 
+  public void blockById(long cardId){cardRepository.blockById(cardId);}
+
   public TransferResponseDto transfer(TransferRequestDto requestDto, User owner){
     //TODO:
     //  Получать карту не по номеру, а по номеру и OwnerID (?)
@@ -33,5 +35,11 @@ public class CardService {
       return new TransferResponseDto("fail", "Карта не ваша или недостаточно средств");
     }
     return new TransferResponseDto("fail", "Не верный номер карты");
+  }
+
+  public void order(long userId){
+
+    final long cardNumber = (long) ((Math.random() * (999 - 100)) + 100);
+    cardRepository.order(userId, cardNumber);
   }
 }

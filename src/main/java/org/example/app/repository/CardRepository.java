@@ -54,4 +54,13 @@ public class CardRepository {
     jdbcTemplate.update("UPDATE cards SET balance = balance - ? WHERE id = ?", amount, fromCardId);
     jdbcTemplate.update("UPDATE cards SET balance = balance + ? WHERE id = ?", amount, toCardId);
   }
+
+  public void blockById(long cardId){
+    jdbcTemplate.update("UPDATE cards SET active = false WHERE id = ?", cardId);
+  }
+
+  public void order(long userId, long cardNumber){
+    jdbcTemplate.update("INSERT INTO cards(\"ownerId\", number, balance)\n" +
+            "VALUES (?, '**** *?', 0),\n", userId, cardNumber);
+  }
 }

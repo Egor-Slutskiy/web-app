@@ -62,8 +62,24 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
   }
 
   public void order(HttpServletRequest req, HttpServletResponse resp) {
+    final User user = UserHelper.getUser(req);
+    service.order(user.getId());
+    resp.setHeader("Content-Type", "application/json");
+    try {
+      resp.getWriter().write("{\"status\": \"ok\"}");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void blockById(HttpServletRequest req, HttpServletResponse resp) {
+    final var cardId = Long.parseLong(((Matcher) req.getAttribute(RequestAttributes.PATH_MATCHER_ATTR)).group("cardId"));
+    service.blockById(cardId);
+    resp.setHeader("Content-Type", "application/json");
+    try {
+      resp.getWriter().write("{\"status\": \"ok\"}");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }
