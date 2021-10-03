@@ -29,7 +29,7 @@ public class CardHandler { // Servlet -> Controller -> Service (domain) -> domai
     try {
       final var user = UserHelper.getUser(req);
       List<Card> data;
-      if(((List<?>)((Authentication)req.getAttribute(RequestAttributes.AUTH_ATTR)).getCredentials()).contains("ROLE_ADMIN")){
+      if(UserHelper.isAdmin(req)){
         data = service.getAll();
       }
       // cards.getAll?ownerId=1
