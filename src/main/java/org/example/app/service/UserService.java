@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -39,8 +41,8 @@ public class UserService implements AuthenticationProvider, AnonymousProvider, B
     if(user.isPresent()){
       final Optional<Timestamp> optionalTimestamp = repository.tokenCreatedTime(token);
       if(optionalTimestamp.isPresent()){
-        final Timestamp created = optionalTimestamp.get();
-        if(created.getTime() + TokenLifetime.time < new Timestamp(System.currentTimeMillis()).getTime()){
+        final Instant created = optionalTimestamp.get().toInstant();
+        if(created.plus(TokenLifetime.time, ChronoUnit.MINUTES).toEpochMilli() < Instant.now().toEpochMilli()){
           repository.deleteToken(token);
           throw new AuthenticationException("Token expired");
         }
