@@ -60,16 +60,27 @@ public class UserHandler {
         resp.getWriter().write(gson.toJson(responseDto));
         return;
       }
-      if(!requestDto.getCode().isEmpty() & !requestDto.getPassword().isEmpty()){
-        if(service.confirmResetCode(Long.parseLong(requestDto.getCode()), user.getId())){
+
+    } catch (IOException e){
+      throw new RuntimeException(e);
+    }
+  }
+
+  public void confirmReset(HttpServletRequest req, HttpServletResponse resp){
+    try {
+      final var requestDto = gson.fromJson(req.getReader(), ResetPassRequestDto.class);
+      ResetPassResponseDto responseDto;
+      final var user = UserHelper.getUser(req);
+      if (!requestDto.getCode().isEmpty() & !requestDto.getPassword().isEmpty()) {
+        if (service.confirmResetCode(Long.parseLong(requestDto.getCode()), user.getId())) {
           responseDto = service.resetPassword(requestDto.getPassword(), user.getId());
           resp.setHeader("Content-Type", "application/json");
           resp.getWriter().write(gson.toJson(responseDto));
         }
-      }else {
+      } else {
         throw new RuntimeException("Wrong reset request");
       }
-    } catch (IOException e){
+    }catch (IOException e){
       throw new RuntimeException(e);
     }
   }

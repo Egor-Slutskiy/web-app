@@ -62,7 +62,8 @@ public class ServletContextLoadDestroyListener implements ServletContextListener
               Pattern.compile("/rest/cards"), Map.of(POST, cardHandler::order),
               Pattern.compile("^/rest/cards/(?<cardId>\\d+)$"), Map.of(DELETE, cardHandler::blockById),
               Pattern.compile("/rest/cards/transfer"), Map.of(POST, cardHandler::transfer),
-              Pattern.compile("/rest/reset_password"), Map.of(POST, userHandler::resetPassword)
+              Pattern.compile("/rest/reset_password"), Map.of(GET, userHandler::resetPassword),
+              Pattern.compile("/rest/confirm_reset"), Map.of(POST, userHandler::confirmReset)
       );
       context.setAttribute(ContextAttributes.ROUTES_ATTR, routes);
 
